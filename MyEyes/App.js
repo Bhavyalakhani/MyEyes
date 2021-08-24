@@ -7,15 +7,11 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
+import {createStackNavigator} from "react-navigation-stack";
+import {createAppContainer} from "react-navigation"
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  Text
 } from 'react-native';
 
 import {
@@ -26,69 +22,28 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+//screens import 
+import Home from "./src/screens/Home.js";
+import ModelOutput from './src/screens/ModelOutput.js';
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const stacknavigator = createStackNavigator({
+  Home:{
+    screen:Home,
+  },
+  ModelOutput:{
+    screen:ModelOutput
+  }
+})
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const AppContainer = createAppContainer(stacknavigator);
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+class App extends React.Component {
+  render(){
+    return(
+      <AppContainer></AppContainer>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   sectionContainer: {
