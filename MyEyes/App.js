@@ -27,8 +27,10 @@ import Home from "./src/screens/Home.js";
 import ModelOutput from './src/screens/ModelOutput.js';
 
 const stacknavigator = createStackNavigator({
-  Home:{
+  MyEyes:{
     screen:Home,
+    navigationOptions:{
+    }
   },
   ModelOutput:{
     screen:ModelOutput
