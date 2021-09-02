@@ -3,6 +3,7 @@ import { Text,TouchableOpacity,View,ScrollView, FlatList,StyleSheet, Alert, Acti
 import Icon from "react-native-vector-icons/FontAwesome";
 import Voice from '@react-native-community/voice';
 import Tts from 'react-native-tts';
+import colors from "../assets/colors";
 
 
 export default class Home extends React.Component {
@@ -115,7 +116,7 @@ export default class Home extends React.Component {
                         <Text style={styles.textsize}>Money Detection</Text>
                         <Icon name="angle-right" size={30} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box} onPress={() => {this.props.navigation.navigate("ModelOutput")}}>
+                    <TouchableOpacity style={styles.box} onPress={() => {this.props.navigation.navigate("DocumentReading")}}>
                         <Text style={styles.textsize}>Document Reading</Text>
                         <Icon name="angle-right" size={30} color="black" />
                     </TouchableOpacity>
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
         bottom:0,
         alignItems:"center",
         height:40,
-        backgroundColor:"#3355ff",
+        backgroundColor:colors.bottomcolor.backgroundColor,
         alignContent:"center",
         justifyContent:"center"
     }

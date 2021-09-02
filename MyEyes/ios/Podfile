@@ -14,6 +14,8 @@ target 'MyEyes' do
 
   pod 'react-native-voice', :path => '../node_modules/@react-native-community/voice'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'MyEyesTests' do
     inherit! :complete
     # Pods for testing

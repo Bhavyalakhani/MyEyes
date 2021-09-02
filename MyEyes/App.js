@@ -25,6 +25,7 @@ import {
 //screens import 
 import Home from "./src/screens/Home.js";
 import ModelOutput from './src/screens/ModelOutput.js';
+import DocReading from "./src/screens/DocReading"
 
 const stacknavigator = createStackNavigator({
   MyEyes:{
@@ -34,6 +35,12 @@ const stacknavigator = createStackNavigator({
   },
   ModelOutput:{
     screen:ModelOutput
+  },
+  DocumentReading:{
+    screen:DocReading,
+    navigationOptions:{
+      title:"Document Reading"
+    }
   }
 })
 
