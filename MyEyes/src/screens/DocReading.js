@@ -50,11 +50,10 @@ export default class DocReading extends React.Component {
 
     launchcamera = async () => {
         let options = {
+            includeBase64:true,
             storageOptions: {
               skipBackup: true,
               path: 'images',
-              mediaTypes: ImagePicker.MediaTypeOptions.All,
-              base64:true
             },
           };
           ImagePicker.launchCamera(options, (response) => {
@@ -69,13 +68,10 @@ export default class DocReading extends React.Component {
               alert(response.customButton);
             } else {
               const source = { uri: response.uri };
-              console.log('response', JSON.stringify(response));
-              console.log("uri =",response.assets[0].uri);
-              const uri = response.assets[0].uri
               this.setState({
                 filePath: response,
                 fileData: response.data,
-                fileUri: response.assets[0].uri,
+                fileUri: response.uri,
               });
               this.ocr(response)
               
@@ -86,9 +82,13 @@ export default class DocReading extends React.Component {
     ocr = async (response) => {
         console.log(response);
         const data = new FormData();
-        data.append("file",response);
+        data.append("file",{
+            name:response.fileName,
+            type:response.type,
+            uri:response.uri
+        });
 
-        await fetch("https://127.0.0.1:5000/upload",{
+        await fetch("https://extract-text-image.herokuapp.com/upload",{
             method:"POST",
             headers:{
                 "Content-Type":"multipart/form-data"
@@ -121,11 +121,11 @@ export default class DocReading extends React.Component {
                     <View>
                         {this.state.text?
                             <View>
-                            <Text>No Doc Text</Text>
-                            </View>
-                        :
-                            <View>
                                 <Text>{this.state.text}</Text>
+                            </View>
+                            :
+                            <View>
+                            <Text>No Doc Text</Text>
                             </View>
                         }
                     </View>
