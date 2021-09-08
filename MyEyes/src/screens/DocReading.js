@@ -1,10 +1,9 @@
 import React from "react";
-import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator,Dimensions } from "react-native";
 import Tts from "react-native-tts";
 import * as ImagePicker from "react-native-image-picker"
 import colors from "../assets/colors"
 import Icon from "react-native-vector-icons/FontAwesome5"
-import { file } from "@babel/types";
 
 export default class DocReading extends React.Component {
     constructor(props){
@@ -14,7 +13,10 @@ export default class DocReading extends React.Component {
             filePath:null,
             fileData:null,
             fileUri:null,
-            text:null
+            text:null,
+            success:false,
+            width:null,
+            height:null
         }
     }
 
@@ -22,6 +24,13 @@ export default class DocReading extends React.Component {
         this.setState({
             isloading:false
         });
+        const width = Dimensions.get("window").width
+        const height = Dimensions.get("window").height
+        this.setState({
+            width,
+            height
+        })
+        console.log(width,height)
     //     await Tts.speak('Click on the button at the bottom of the screen to turn on camera', {
     //         androidParams: {
     //         KEY_PARAM_PAN: -1,
@@ -50,7 +59,9 @@ export default class DocReading extends React.Component {
 
     launchcamera = async () => {
         let options = {
-            includeBase64:true,
+            maxWidth:600,
+            maxHeight:600,
+            quality:0.5,
             storageOptions: {
               skipBackup: true,
               path: 'images',
@@ -97,12 +108,28 @@ export default class DocReading extends React.Component {
         })
         .then((apiresponse) => apiresponse.json())
         .then(ocrtext => {
-            console.log(ocrtext);
-            this.setState({
-              text:ocrtext.text
-            })
-        })
+            if(ocrtext.sucess == true){
+                console.log(ocrtext);
+                this.setState({
+                    success:true,
+                    text:ocrtext.response.text
+                })
+                console.log("Text Done")
+                this.readoutresponse(ocrtext.response.text)
+                }
+                })
         .catch(e => console.log(e))
+    }
+
+    readoutresponse = async (text) => {
+        await Tts.speak(text, {
+            androidParams: {
+            KEY_PARAM_PAN: -1,
+            KEY_PARAM_VOLUME: 0.5,
+            KEY_PARAM_STREAM: 'STREAM_MUSIC',
+            language:"en-US"
+        },
+      });
     }
 
 
@@ -119,21 +146,26 @@ export default class DocReading extends React.Component {
             return(
                 <View style={styles.container}>
                     <View>
-                        {this.state.text?
+                        {this.state.success?
                             <View>
-                                <Text>{this.state.text}</Text>
+                                <Text style={{color:'black'}}>{this.state.text}</Text>
                             </View>
                             :
                             <View>
-                            <Text>No Doc Text</Text>
+                                <Text>No Doc Text</Text>
                             </View>
                         }
                     </View>
                     <View>
-                    <TouchableOpacity style={styles.bottombutton} onPress={this.launchcamera}> 
-                        <Icon name="camera" size={30} style={{paddingRight:10}} />
-                        <Text style={{fontSize:20}}>Camera</Text>
-                    </TouchableOpacity>
+                        <View style={{left:this.state.width - 90}}>
+                            <View style={styles.stopbutton}>
+                                <Icon name="plus" size={25}  />
+                            </View>
+                        </View>
+                        <TouchableOpacity style={styles.bottombutton} onPress={this.launchcamera}> 
+                            <Icon name="camera" size={30} style={{paddingRight:10}} />
+                            <Text style={{fontSize:20}}>Camera</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -154,5 +186,15 @@ const styles = StyleSheet.create({
         backgroundColor:colors.bottomcolor.backgroundColor,
         justifyContent:"center",
         alignItems:"center",
+    },
+    stopbutton:{
+        marginBottom:30,
+        borderRadius:70,
+        height:70,
+        width:70,
+        justifyContent:"center",
+        backgroundColor:colors.bottomcolor.backgroundColor,
+        alignContent:"center",
+        alignItems:'center'
     }
 })

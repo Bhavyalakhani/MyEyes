@@ -49,6 +49,14 @@ export default class Home extends React.Component {
       }
 
       onSpeechEnd = (e) => {
+        // Tts.speak('If you wish to speak again then activate voice command again!', {
+        //     androidParams: {
+        //       KEY_PARAM_PAN: -1,
+        //       KEY_PARAM_VOLUME: 0.5,
+        //       KEY_PARAM_STREAM: 'STREAM_MUSIC',
+        //       language:"en-US",
+        //     },
+        //   });
         console.log(e);
       }
 
