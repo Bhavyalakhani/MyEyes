@@ -4,12 +4,12 @@ import Tts from "react-native-tts";
 import * as ImagePicker from "react-native-image-picker"
 import colors from "../assets/colors"
 import Icon from "react-native-vector-icons/FontAwesome5"
-import {bundleResourceIO} from "@tensorflow/tfjs-react-native"
-import * as tf from "@tensorflow/tfjs"
+// import {bundleResourceIO} from "@tensorflow/tfjs-react-native"
+// import * as tf from "@tensorflow/tfjs"
 
 // model
 const moneydetection_json = require("../../models/moneydetection/mobilenet.json");
-// const moneydetection_model = require("../../models/moneydetection/group1-shard.bin");
+// const moneydetection_model = require("C:\Users\\bhavy\Github_ML\MyEyes\MyEyes\models\moneydetection\group1-shard.bin");
 
 export default class DocReading extends React.Component {
     constructor(props){
@@ -28,9 +28,9 @@ export default class DocReading extends React.Component {
         this.setState({
             isloading:false
         });
-        const model = await tf
-        .loadLayersModel(bundleResourceIO(moneydetection_json, moneydetection_model))
-        .catch(e => console.log(e));
+        // const model = await tf
+        // .loadLayersModel(bundleResourceIO(moneydetection_json, moneydetection_model))
+        // .catch(e => console.log(e));
         console.log("Model loaded!");
 
 
@@ -42,14 +42,17 @@ export default class DocReading extends React.Component {
 //         language:"en-US"
 //     },
 //   });
-        this.setState({
-            model:model
-        })
+        // this.setState({
+        //     model:model
+        // })
     }
 
 
     launchcamera = async () => {
         let options = {
+            maxWidth:600,
+            maxHeight:600,
+            quality:0.5,
             storageOptions: {
               skipBackup: true,
               path: 'images',
@@ -72,13 +75,13 @@ export default class DocReading extends React.Component {
                 fileData: response.data,
                 fileUri: response.uri,
               });
-              this.ocr(response)
+              this.currencydetection(response)
               
             }
           });
     }
 
-    ocr = async (response) => {
+    currencydetection = async (response) => {
         console.log(response);
         const data = new FormData();
         data.append("file",{
@@ -87,21 +90,35 @@ export default class DocReading extends React.Component {
             uri:response.uri
         });
 
-        // await fetch("https://extract-text-image.herokuapp.com/upload",{
-        //     method:"POST",
-        //     headers:{
-        //         "Content-Type":"multipart/form-data"
-        //     },
-        //     body:data,
-        // })
-        // .then((apiresponse) => apiresponse.json())
-        // .then(ocrtext => {
-        //     console.log(ocrtext);
-        //     this.setState({
-        //       text:ocrtext.text
-        //     })
-        // })
-        // .catch(e => console.log(e))
+        await fetch("http://192.168.0.125:5000/currencydetection",{
+            method:"POST",
+            headers:{
+                "Content-Type":"multipart/form-data"
+            },
+            body:data,
+        })
+        .then((apiresponse) => apiresponse.json())
+        .then(currencyresponse => {
+            if(currencyresponse.success == true){
+                console.log(currencyresponse);
+                this.setState({
+                  text:currencyresponse.prediction
+                })
+            this.readoutresponse(currencyresponse.prediction)                
+            }
+        })
+        .catch(e => console.log(e))
+    }
+
+    readoutresponse = async (prediction) => {
+        await Tts.speak(prediction, {
+            androidParams: {
+            KEY_PARAM_PAN: -1,
+            KEY_PARAM_VOLUME: 0.5,
+            KEY_PARAM_STREAM: 'STREAM_MUSIC',
+            language:"en-US"
+            },
+            });
     }
 
 
@@ -117,14 +134,14 @@ export default class DocReading extends React.Component {
         else{
             return(
                 <View style={styles.container}>
-                    <View>
+                    <View style={{alignSelf:"center"}}>
                         {this.state.text?
                             <View>
-                                <Text>{this.state.text}</Text>
-                            </View>
+                                <Text style={{fontWeight:"600",fontSize:30}}>{this.state.text}</Text>
+                            </View> 
                             :
                             <View>
-                            <Text>No Doc Text</Text>
+                            <Text style={{fontWeight:"600",fontSize:30}}>No Currency Detected</Text>
                             </View>
                         }
                     </View>
@@ -150,7 +167,7 @@ const styles = StyleSheet.create({
     bottombutton:{
         height:60,
         flexDirection:"row",
-        backgroundColor:colors.bottomcolor.backgroundColor,
+        backgroundColor:"red",
         justifyContent:"center",
         alignItems:"center",
     }

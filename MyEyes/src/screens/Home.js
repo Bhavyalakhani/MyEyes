@@ -10,7 +10,7 @@ export default class Home extends React.Component {
     constructor(props){
         super(props);
         Voice.onSpeechStart = this.onSpeechStart.bind(this);
-        Voice.onSpeechRecognized = this.onSpeechRecognized.bind(this);
+        // Voice.onSpeechRecognized = this.onSpeechRecognized.bind(this);
         Voice.onSpeechResults = this.onSpeechResults.bind(this);
         Voice.onSpeechEnd = this.onSpeechEnd.bind(this);
         this.state={
@@ -43,12 +43,10 @@ export default class Home extends React.Component {
 
     onSpeechStart = (e) => {
         console.log(e.value);
-        this.setState({
-          started: '√',
-        });
       }
 
       onSpeechEnd = (e) => {
+        console.log(e);
         // Tts.speak('If you wish to speak again then activate voice command again!', {
         //     androidParams: {
         //       KEY_PARAM_PAN: -1,
@@ -57,21 +55,39 @@ export default class Home extends React.Component {
         //       language:"en-US",
         //     },
         //   });
-        console.log(e);
+        this.navigatethruspeech(e)
       }
 
-    onSpeechRecognized = (e) => {
-        this.setState({
-          recognized: '√',
-        });
+      navigatethruspeech = (e) => {
+        for(let i=0;i<e.length;i++){
+            console.log("Inside for loop")
+            if(e[i].toLowerCase.trim == "moneydetection"){
+                console.log("Reached 1")
+                this.props.navigation.navigate("Money Detection")
+            }
+            if(e[i].toLowerCase.trim == "documentreading"){
+                console.log("Reached 2")
+                this.props.navigation.navigate("Document Reading")
+            }
+            if(e[i].toLowerCase.trim == "colordetection"){
+                console.log("Reached 3")
+                this.props.navigation.navigate("Document Reading")
+            }
       }
+        console.log("hi")
+        this.setState({
+            activatevoice:!this.state.activatevoice
+        })
+      }
+
 
     onSpeechResults = (e) =>  {
         console.log(e.value)
+        console.log("1")
         this.setState({
           results: e.value,
         });
-      }
+    }
 
      _startRecognition = async (e) => {
         console.log("recognizing speech")
@@ -120,7 +136,7 @@ export default class Home extends React.Component {
         return(
             <View style={{flex:1,flexDirection:"column",justifyContent:"space-between"}}>
                 <View>
-                    <TouchableOpacity style={styles.box} onPress={() => {this.props.navigation.navigate("ModelOutput")}}>
+                    <TouchableOpacity style={styles.box} onPress={() => {this.props.navigation.navigate("MoneyDetection")}}>
                         <Text style={styles.textsize}>Money Detection</Text>
                         <Icon name="angle-right" size={30} color="black" />
                     </TouchableOpacity>

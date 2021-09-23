@@ -16,7 +16,8 @@ export default class DocReading extends React.Component {
             text:null,
             success:false,
             width:null,
-            height:null
+            height:null,
+            pause:false
         }
     }
 
@@ -132,6 +133,33 @@ export default class DocReading extends React.Component {
       });
     }
 
+    pausespeaking = async () => {
+        console.log("Pause Speaking");
+        await Tts.pause();
+        this.setState({pause:true})
+    }
+
+    restartspeaking = async () => {
+        console.log("Restarting speaking");
+        await Tts.resume();
+        this.setState({
+            pause:false
+        })
+    }
+
+    stopspeaking = async () => {
+        console.log("SPeaking terminated");
+        await Tts.stop();
+        await Tts.speak("Speaking has been terminated", {
+            androidParams: {
+            KEY_PARAM_PAN: -1,
+            KEY_PARAM_VOLUME: 0.5,
+            KEY_PARAM_STREAM: 'STREAM_MUSIC',
+            language:"en-US"
+        },
+      });
+    }
+
 
     render(){
         if(this.state.isloading){
@@ -157,10 +185,26 @@ export default class DocReading extends React.Component {
                         }
                     </View>
                     <View>
-                        <View style={{left:this.state.width - 90}}>
-                            <View style={styles.stopbutton}>
-                                <Icon name="plus" size={25}  />
-                            </View>
+                        <View style={{flexDirection:"row",justifyContent:"space-between",marginBottom:30,paddingHorizontal:20}}>
+                        {
+                            this.state.pause==false?
+                                <TouchableOpacity  onPress={() => {this.pausespeaking()}}> 
+                                    <View style={styles.stopbutton}>
+                                        <Icon name="pause" size={25}  />
+                                    </View>
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity  onPress={() => {this.restartspeaking()}}> 
+                                    <View style={[styles.stopbutton]}>
+                                        <Icon name="play" size={25}  />
+                                    </View>
+                                </TouchableOpacity>                            
+                        }
+                            <TouchableOpacity  onPress={this.stopspeaking}> 
+                                <View style={[styles.stopbutton]}>
+                                        <Icon name="minus" size={25}  />
+                                </View>
+                            </TouchableOpacity> 
                         </View>
                         <TouchableOpacity style={styles.bottombutton} onPress={this.launchcamera}> 
                             <Icon name="camera" size={30} style={{paddingRight:10}} />
@@ -188,12 +232,11 @@ const styles = StyleSheet.create({
         alignItems:"center",
     },
     stopbutton:{
-        marginBottom:30,
         borderRadius:70,
         height:70,
         width:70,
         justifyContent:"center",
-        backgroundColor:colors.bottomcolor.backgroundColor,
+        backgroundColor:"red",
         alignContent:"center",
         alignItems:'center'
     }

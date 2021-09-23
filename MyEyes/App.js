@@ -25,7 +25,8 @@ import {
 //screens import 
 import Home from "./src/screens/Home.js";
 import ModelOutput from './src/screens/ModelOutput.js';
-import DocReading from "./src/screens/DocReading"
+import DocReading from "./src/screens/DocReading.js"
+import MoneyDetection from "./src/screens/MoneyDetection.js"
 
 const stacknavigator = createStackNavigator({
   MyEyes:{
@@ -41,6 +42,9 @@ const stacknavigator = createStackNavigator({
     navigationOptions:{
       title:"Document Reading"
     }
+  },
+  MoneyDetection:{
+    screen:MoneyDetection
   }
 })
 
