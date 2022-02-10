@@ -27,6 +27,7 @@ import Home from "./src/screens/Home.js";
 import ModelOutput from './src/screens/ModelOutput.js';
 import DocReading from "./src/screens/DocReading.js"
 import MoneyDetection from "./src/screens/MoneyDetection.js"
+import ExpiryDateRecognitiion from "./src/screens/ExpriyDateRecognition"
 
 const stacknavigator = createStackNavigator({
   MyEyes:{
@@ -34,8 +35,11 @@ const stacknavigator = createStackNavigator({
     navigationOptions:{
     }
   },
-  ModelOutput:{
-    screen:ModelOutput
+  ExpirydateRecognition:{
+    screen:ExpiryDateRecognitiion,
+    navigationOptions:{
+      title:"Expiry Date Recognition"
+    }
   },
   DocumentReading:{
     screen:DocReading,
@@ -44,7 +48,10 @@ const stacknavigator = createStackNavigator({
     }
   },
   MoneyDetection:{
-    screen:MoneyDetection
+    screen:MoneyDetection,
+    navigationOptions:{
+      title:"Expiry Date Recognition"
+    }
   }
 })
 
