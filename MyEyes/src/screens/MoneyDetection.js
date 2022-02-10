@@ -85,9 +85,9 @@ export default class DocReading extends React.Component {
         console.log(response);
         const data = new FormData();
         data.append("file",{
-            name:response.fileName,
-            type:response.type,
-            uri:response.uri
+            name:response.assets[0].fileName,
+            type:response.assets[0].type,
+            uri:response.assets[0].uri
         });
 
         await fetch("http://192.168.0.125:5000/currencydetection",{
@@ -99,6 +99,7 @@ export default class DocReading extends React.Component {
         })
         .then((apiresponse) => apiresponse.json())
         .then(currencyresponse => {
+            console.log(currencyresponse);
             if(currencyresponse.success == true){
                 console.log(currencyresponse);
                 this.setState({

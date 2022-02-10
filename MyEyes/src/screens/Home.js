@@ -30,14 +30,14 @@ export default class Home extends React.Component {
           this.setState({
               isloading:false
           })
-          Tts.speak('Welcome To MyEyes!', {
-            androidParams: {
-              KEY_PARAM_PAN: -1,
-              KEY_PARAM_VOLUME: 0.5,
-              KEY_PARAM_STREAM: 'STREAM_MUSIC',
-              language:"en-US",
-            },
-          });
+        //   Tts.speak('Welcome To MyEyes!', {
+        //     androidParams: {
+        //       KEY_PARAM_PAN: -1,
+        //       KEY_PARAM_VOLUME: 0.5,
+        //       KEY_PARAM_STREAM: 'STREAM_MUSIC',
+        //       language:"en-US",
+        //     },
+        //   });
       }
 
 

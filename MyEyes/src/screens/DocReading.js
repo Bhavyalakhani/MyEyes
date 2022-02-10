@@ -1,5 +1,5 @@
 import React from "react";
-import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator,Dimensions } from "react-native";
+import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator,Dimensions,PermissionsAndroid } from "react-native";
 import Tts from "react-native-tts";
 import * as ImagePicker from "react-native-image-picker"
 import colors from "../assets/colors"
@@ -42,62 +42,85 @@ export default class DocReading extends React.Component {
     //   });
     }
 
-    urlToBlob(url) {
-        return new Promise((resolve, reject) => {
-            var xhr = new XMLHttpRequest();
-            xhr.onerror = reject;
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    resolve(xhr.response);
-                }
-            };
-            xhr.open('GET', url);
-            xhr.responseType = 'blob'; // convert type
-            xhr.send();
-        })
-    }
+    // urlToBlob(url) {
+    //     return new Promise((resolve, reject) => {
+    //         var xhr = new XMLHttpRequest();
+    //         xhr.onerror = reject;
+    //         xhr.onreadystatechange = () => {
+    //             if (xhr.readyState === 4) {
+    //                 resolve(xhr.response);
+    //             }
+    //         };
+    //         xhr.open('GET', url);
+    //         xhr.responseType = 'blob'; // convert type
+    //         xhr.send();
+    //     })
+    // }
 
 
     launchcamera = async () => {
-        let options = {
-            maxWidth:600,
-            maxHeight:600,
-            quality:0.5,
-            storageOptions: {
-              skipBackup: true,
-              path: 'images',
-            },
-          };
-          ImagePicker.launchCamera(options, (response) => {
-            console.log('Response = ', response);
-      
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            } else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-              console.log('User tapped custom button: ', response.customButton);
-              alert(response.customButton);
-            } else {
-              const source = { uri: response.uri };
-              this.setState({
-                filePath: response,
-                fileData: response.data,
-                fileUri: response.uri,
-              });
-              this.ocr(response)
-              
-            }
-          });
+        try {
+            let options = {
+                noData:true,
+                maxWidth:600,
+                maxHeight:600,
+                quality:0.9,
+                storageOptions: {
+                    skipBackup: true,
+                    path: 'images',
+                  },
+              };
+              console.log("Turning on camera");
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                  title: "Cool Photo App Camera Permission",
+                  message:
+                    "Cool Photo App needs access to your camera " +
+                    "so you can take awesome pictures.",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+              console.log(granted);
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("You can use the camera");
+              } else {
+                console.log("Camera permission denied");
+              }
+              const response = await ImagePicker.launchCamera(options)
+            
+                console.log('Response = ', response);
+            
+                if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                } else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                } else if (response.customButton) {
+                    console.log('User tapped custom button: ', response.customButton);
+                    alert(response.customButton);
+                } else {
+                    this.setState({
+                    filePath: response,
+                    fileData: response.data,
+                    fileUri: response.uri,
+                    });
+                    this.ocr(response)
+                    
+                } 
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     ocr = async (response) => {
         console.log(response);
         const data = new FormData();
         data.append("file",{
-            name:response.fileName,
-            type:response.type,
-            uri:response.uri
+            name:response.assets[0].fileName,
+            type:response.assets[0].type,
+            uri:response.assets[0].uri
         });
 
         await fetch("https://extract-text-image.herokuapp.com/upload",{
@@ -109,8 +132,8 @@ export default class DocReading extends React.Component {
         })
         .then((apiresponse) => apiresponse.json())
         .then(ocrtext => {
-            if(ocrtext.sucess == true){
-                console.log(ocrtext);
+            console.log(ocrtext);
+            if(ocrtext.success == true){
                 this.setState({
                     success:true,
                     text:ocrtext.response.text
@@ -118,12 +141,15 @@ export default class DocReading extends React.Component {
                 console.log("Text Done")
                 this.readoutresponse(ocrtext.response.text)
                 }
+                if(ocrtext.success == false){
+                    this.readoutresponse(ocrtext.message)
+                }
                 })
         .catch(e => console.log(e))
     }
 
     readoutresponse = async (text) => {
-        await Tts.speak(text, {
+        Tts.speak(text, {
             androidParams: {
             KEY_PARAM_PAN: -1,
             KEY_PARAM_VOLUME: 0.5,
@@ -175,11 +201,11 @@ export default class DocReading extends React.Component {
                 <View style={styles.container}>
                     <View>
                         {this.state.success?
-                            <View>
+                            <View style={{padding:10}}>
                                 <Text style={{color:'black'}}>{this.state.text}</Text>
                             </View>
                             :
-                            <View>
+                            <View style={{padding:10}}>
                                 <Text>No Doc Text</Text>
                             </View>
                         }
@@ -206,7 +232,7 @@ export default class DocReading extends React.Component {
                                 </View>
                             </TouchableOpacity> 
                         </View>
-                        <TouchableOpacity style={styles.bottombutton} onPress={this.launchcamera}> 
+                        <TouchableOpacity style={styles.bottombutton} onPress={() => {this.launchcamera()}}> 
                             <Icon name="camera" size={30} style={{paddingRight:10}} />
                             <Text style={{fontSize:20}}>Camera</Text>
                         </TouchableOpacity>
