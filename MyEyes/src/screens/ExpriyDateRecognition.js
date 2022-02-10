@@ -134,6 +134,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
         .then(ocrtext => {
             console.log(ocrtext);
             if(ocrtext.success == true){
+                const _text = ocrtext.response.text;
                 if (_text!=null)
                 {
                   if(_text.contains('Exp Date'))
