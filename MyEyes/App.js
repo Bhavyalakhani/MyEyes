@@ -14,17 +14,8 @@ import {
   Text
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 //screens import 
 import Home from "./src/screens/Home.js";
-import ModelOutput from './src/screens/ModelOutput.js';
 import DocReading from "./src/screens/DocReading.js"
 import MoneyDetection from "./src/screens/MoneyDetection.js"
 import ExpiryDateRecognitiion from "./src/screens/ExpriyDateRecognition"
