@@ -1,5 +1,5 @@
 import React from "react";
-import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator,Dimensions,PermissionsAndroid } from "react-native";
+import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator,Dimensions,PermissionsAndroid, Alert } from "react-native";
 import Tts from "react-native-tts";
 import * as ImagePicker from "react-native-image-picker"
 import colors from "../assets/colors"
@@ -134,6 +134,111 @@ export default class ExpiryDateRecognitiion extends React.Component {
         .then(ocrtext => {
             console.log(ocrtext);
             if(ocrtext.success == true){
+                if (_text!=null)
+                {
+                  if(_text.contains('Exp Date'))
+                  {
+                    let index = _text.indexOf('Exp');
+                    var ans = _text.substring(index,index+17);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                  }
+                  else if(_text.contains('exp Date'))
+                  {
+                    let index = _text.indexOf('exp');
+                    var ans = _text.substring(index,index+17);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                  }
+                  else if(_text.contains('EXP DATE'))
+                  {
+                    let index = _text.indexOf('EXP');
+                    var ans = _text.substring(index,index+17);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                  }
+                  else if(_text.contains('Expiry Date'))
+                  {
+                    let index = _text.indexOf('Expiry Date');
+                    var ans = _text.substring(index,index+20);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                  }
+                  else if(_text.contains('Exp. Date'))
+                  {
+                    let index = _text.indexOf('Exp. Date');
+                    var ans = _text.substring(index,index+18);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('expiry'))
+                  {
+                    let index = _text.indexOf('expiry Date');
+                    var ans = _text.substring(index,index+20);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('EXPIRY DATE'))
+                  {
+                    let index = _text.indexOf('EXPIRY DATE');
+                    var ans = _text.substring(index,index+20);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('Exp'))
+                  {
+                    let index = _text.indexOf('Exp');
+                    var ans = _text.substring(index,index+12);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('exp'))
+                  {
+                    let index = _text.indexOf('exp');
+                    var ans = _text.substring(index,index+12);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('EXP'))
+                  {
+                    let index = _text.indexOf('EXP');
+                    var ans = _text.substring(index,index+12);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('Expiry'))
+                  {
+                    let index = _text.indexOf('Expiry');
+                    var ans = _text.substring(index,index+15);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('expiry'))
+                  {
+                    let index = _text.indexOf('expiry');
+                    var ans = _text.substring(index,index+15);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else if(_text.contains('EXPIRY'))
+                  {
+                    let index = _text.indexOf('EXPIRY');
+                    var ans = _text.substring(index,index+15);
+                    out=ans;
+                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                  }
+                  else
+                  {
+                    speak('No expiry Date found. Please try taking another photo from another side or angle. Click anywhere to start again');
+                    out = 'No expiry Date found. Please try taking another photo from another side or angle.';
+                  }
+                }
+                else {
+                    this.setState({
+                        success:false,
+                        text:"Sorry could not fetch, please try again"
+                    })
+                }
                 this.setState({
                     success:true,
                     text:ocrtext.response.text
