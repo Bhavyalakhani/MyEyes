@@ -32,7 +32,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
             height
         })
         console.log(width,height)
-    //     await Tts.speak('Click on the button at the bottom of the screen to turn on camera', {
+    //     await Tts.out = ('Click on the button at the bottom of the screen to turn on camera', {
     //         androidParams: {
     //         KEY_PARAM_PAN: -1,
     //         KEY_PARAM_VOLUME: 0.5,
@@ -132,105 +132,99 @@ export default class ExpiryDateRecognitiion extends React.Component {
         })
         .then((apiresponse) => apiresponse.json())
         .then(ocrtext => {
+            let out;
             console.log(ocrtext);
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = mm + '/' + dd + '/' + yyyy;
             if(ocrtext.success == true){
                 const _text = ocrtext.response.text;
                 if (_text!=null)
                 {
-                  if(_text.contains('Exp Date'))
+                  if(_text.includes('Exp Date'))
                   {
                     let index = _text.indexOf('Exp');
                     var ans = _text.substring(index,index+17);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('exp Date'))
+                  else if(_text.includes('exp Date'))
                   {
                     let index = _text.indexOf('exp');
                     var ans = _text.substring(index,index+17);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('EXP DATE'))
+                  else if(_text.includes('EXP DATE'))
                   {
                     let index = _text.indexOf('EXP');
                     var ans = _text.substring(index,index+17);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('Expiry Date'))
+                  else if(_text.includes('Expiry Date'))
                   {
                     let index = _text.indexOf('Expiry Date');
                     var ans = _text.substring(index,index+20);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear());
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('Exp. Date'))
+                  else if(_text.includes('Exp. Date'))
                   {
                     let index = _text.indexOf('Exp. Date');
                     var ans = _text.substring(index,index+18);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('expiry'))
+                  else if(_text.includes('expiry'))
                   {
                     let index = _text.indexOf('expiry Date');
                     var ans = _text.substring(index,index+20);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('EXPIRY DATE'))
+                  else if(_text.includes('EXPIRY DATE'))
                   {
                     let index = _text.indexOf('EXPIRY DATE');
                     var ans = _text.substring(index,index+20);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('Exp'))
+                  else if(_text.includes('Exp'))
                   {
                     let index = _text.indexOf('Exp');
                     var ans = _text.substring(index,index+12);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('exp'))
+                  else if(_text.includes('exp'))
                   {
                     let index = _text.indexOf('exp');
                     var ans = _text.substring(index,index+12);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('EXP'))
+                  else if(_text.includes('EXP'))
                   {
                     let index = _text.indexOf('EXP');
                     var ans = _text.substring(index,index+12);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('Expiry'))
+                  else if(_text.includes('Expiry'))
                   {
                     let index = _text.indexOf('Expiry');
                     var ans = _text.substring(index,index+15);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('expiry'))
+                  else if(_text.includes('expiry'))
                   {
                     let index = _text.indexOf('expiry');
                     var ans = _text.substring(index,index+15);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
-                  else if(_text.contains('EXPIRY'))
+                  else if(_text.includes('EXPIRY'))
                   {
                     let index = _text.indexOf('EXPIRY');
                     var ans = _text.substring(index,index+15);
-                    out=ans;
-                    speak(ans + "And TogetDay's Date " + Date.getDay() + ' ' + Date.getMonth()+' '+Date.getFullYear()+"Click anywhere to start again.");
+                    out = (ans + " " + today);
                   }
                   else
                   {
-                    speak('No expiry Date found. Please try taking another photo from another side or angle. Click anywhere to start again');
+                    out = ('No expiry Date found. Please try taking another photo from another side or angle. Click anywhere to start again');
                     out = 'No expiry Date found. Please try taking another photo from another side or angle.';
                   }
                 }
@@ -242,7 +236,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
                 }
                 this.setState({
                     success:true,
-                    text:ocrtext.response.text
+                    text:out
                 })
                 console.log("Text Done")
                 this.readoutresponse(ocrtext.response.text)
@@ -255,7 +249,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
     }
 
     readoutresponse = async (text) => {
-        Tts.speak(text, {
+        Tts.out = (text, {
             androidParams: {
             KEY_PARAM_PAN: -1,
             KEY_PARAM_VOLUME: 0.5,
@@ -265,13 +259,13 @@ export default class ExpiryDateRecognitiion extends React.Component {
       });
     }
 
-    pausespeaking = async () => {
-        console.log("Pause Speaking");
+    pauseout = ing = async () => {
+        console.log("Pause speaking");
         await Tts.pause();
         this.setState({pause:true})
     }
 
-    restartspeaking = async () => {
+    restartout = async () => {
         console.log("Restarting speaking");
         await Tts.resume();
         this.setState({
@@ -279,10 +273,10 @@ export default class ExpiryDateRecognitiion extends React.Component {
         })
     }
 
-    stopspeaking = async () => {
-        console.log("SPeaking terminated");
+    stopout = async () => {
+        console.log("speaking terminated");
         await Tts.stop();
-        await Tts.speak("Speaking has been terminated", {
+        await Tts.out("speaking has been terminated", {
             androidParams: {
             KEY_PARAM_PAN: -1,
             KEY_PARAM_VOLUME: 0.5,
@@ -320,19 +314,19 @@ export default class ExpiryDateRecognitiion extends React.Component {
                         <View style={{flexDirection:"row",justifyContent:"space-between",marginBottom:30,paddingHorizontal:20}}>
                         {
                             this.state.pause==false?
-                                <TouchableOpacity  onPress={() => {this.pausespeaking()}}> 
+                                <TouchableOpacity  onPress={() => {this.pauseout = ing()}}> 
                                     <View style={styles.stopbutton}>
                                         <Icon name="pause" size={25}  />
                                     </View>
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity  onPress={() => {this.restartspeaking()}}> 
+                                <TouchableOpacity  onPress={() => {this.restartout = ing()}}> 
                                     <View style={[styles.stopbutton]}>
                                         <Icon name="play" size={25}  />
                                     </View>
                                 </TouchableOpacity>                            
                         }
-                            <TouchableOpacity  onPress={this.stopspeaking}> 
+                            <TouchableOpacity  onPress={this.stopout = ing}> 
                                 <View style={[styles.stopbutton]}>
                                         <Icon name="minus" size={25}  />
                                 </View>

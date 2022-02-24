@@ -148,8 +148,8 @@ export default class Home extends React.Component {
                         <Text style={styles.textsize}>Color Detection</Text>
                         <Icon name="angle-right" size={30} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box} onPress={() => {this.props.navigation.navigate("ModelOutput")}}>
-                        <Text style={styles.textsize}>Money Detection</Text>
+                    <TouchableOpacity style={styles.box} onPress={() => {this.props.navigation.navigate("ExpirydateRecognition")}}>
+                        <Text style={styles.textsize}>Expiry Date Recognition</Text>
                         <Icon name="angle-right" size={30} color="black" />
                     </TouchableOpacity>
                     {
