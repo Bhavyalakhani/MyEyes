@@ -172,6 +172,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
                   {
                     let index = _text.indexOf('Exp. Date');
                     var ans = _text.substring(index,index+18);
+                    console.log("hi")
                     out = (ans + " " + today);
                   }
                   else if(_text.includes('expiry'))

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text,View,ScrollView,StyleSheet, TouchableOpacity, ActivityIndicator,PermissionsAndroid } from "react-native";
 import Tts from "react-native-tts";
 import * as ImagePicker from "react-native-image-picker"
 import colors from "../assets/colors"
@@ -58,6 +58,24 @@ export default class DocReading extends React.Component {
               path: 'images',
             },
           };
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: "Cool Photo App Camera Permission",
+              message:
+                "Cool Photo App needs access to your camera " +
+                "so you can take awesome pictures.",
+              buttonNeutral: "Ask Me Later",
+              buttonNegative: "Cancel",
+              buttonPositive: "OK"
+            }
+          );
+          console.log(granted);
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("You can use the camera");
+          } else {
+            console.log("Camera permission denied");
+          }
           ImagePicker.launchCamera(options, (response) => {
             console.log('Response = ', response);
       
