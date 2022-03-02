@@ -148,80 +148,80 @@ export default class ExpiryDateRecognitiion extends React.Component {
                   {
                     let index = _text.indexOf('Exp');
                     var ans = _text.substring(index,index+17);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('exp Date'))
                   {
                     let index = _text.indexOf('exp');
                     var ans = _text.substring(index,index+17);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('EXP DATE'))
                   {
                     let index = _text.indexOf('EXP');
                     var ans = _text.substring(index,index+17);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('Expiry Date'))
                   {
                     let index = _text.indexOf('Expiry Date');
                     var ans = _text.substring(index,index+20);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('Exp. Date'))
                   {
                     let index = _text.indexOf('Exp. Date');
                     var ans = _text.substring(index,index+18);
                     console.log("hi")
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('expiry'))
                   {
                     let index = _text.indexOf('expiry Date');
                     var ans = _text.substring(index,index+20);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('EXPIRY DATE'))
                   {
                     let index = _text.indexOf('EXPIRY DATE');
                     var ans = _text.substring(index,index+20);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('Exp'))
                   {
                     let index = _text.indexOf('Exp');
                     var ans = _text.substring(index,index+12);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('exp'))
                   {
                     let index = _text.indexOf('exp');
                     var ans = _text.substring(index,index+12);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('EXP'))
                   {
                     let index = _text.indexOf('EXP');
                     var ans = _text.substring(index,index+12);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('Expiry'))
                   {
                     let index = _text.indexOf('Expiry');
                     var ans = _text.substring(index,index+15);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('expiry'))
                   {
                     let index = _text.indexOf('expiry');
                     var ans = _text.substring(index,index+15);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else if(_text.includes('EXPIRY'))
                   {
                     let index = _text.indexOf('EXPIRY');
                     var ans = _text.substring(index,index+15);
-                    out = (ans + " " + today);
+                    out = (ans + " " + "Today's day " + today);
                   }
                   else
                   {
@@ -240,7 +240,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
                     text:out
                 })
                 console.log("Text Done")
-                this.readoutresponse(ocrtext.response.text)
+                this.readoutresponse(out)
                 }
                 if(ocrtext.success == false){
                     this.readoutresponse(ocrtext.message)
@@ -250,7 +250,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
     }
 
     readoutresponse = async (text) => {
-        Tts.out = (text, {
+        Tts.speak(text, {
             androidParams: {
             KEY_PARAM_PAN: -1,
             KEY_PARAM_VOLUME: 0.5,
@@ -260,7 +260,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
       });
     }
 
-    pauseout = ing = async () => {
+    pauseout = async () => {
         console.log("Pause speaking");
         await Tts.pause();
         this.setState({pause:true})
@@ -277,7 +277,7 @@ export default class ExpiryDateRecognitiion extends React.Component {
     stopout = async () => {
         console.log("speaking terminated");
         await Tts.stop();
-        await Tts.out("speaking has been terminated", {
+        await Tts.speak("speaking has been terminated", {
             androidParams: {
             KEY_PARAM_PAN: -1,
             KEY_PARAM_VOLUME: 0.5,
@@ -315,19 +315,19 @@ export default class ExpiryDateRecognitiion extends React.Component {
                         <View style={{flexDirection:"row",justifyContent:"space-between",marginBottom:30,paddingHorizontal:20}}>
                         {
                             this.state.pause==false?
-                                <TouchableOpacity  onPress={() => {this.pauseout = ing()}}> 
+                                <TouchableOpacity  onPress={() => {this.pauseout()}}> 
                                     <View style={styles.stopbutton}>
                                         <Icon name="pause" size={25}  />
                                     </View>
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity  onPress={() => {this.restartout = ing()}}> 
+                                <TouchableOpacity  onPress={() => {this.restartout()}}> 
                                     <View style={[styles.stopbutton]}>
                                         <Icon name="play" size={25}  />
                                     </View>
                                 </TouchableOpacity>                            
                         }
-                            <TouchableOpacity  onPress={this.stopout = ing}> 
+                            <TouchableOpacity  onPress={() => this.stopout()}> 
                                 <View style={[styles.stopbutton]}>
                                         <Icon name="minus" size={25}  />
                                 </View>

@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     buttonbottom:{
         bottom:0,
         alignItems:"center",
-        height:40,
+        height:70,
         backgroundColor:colors.bottomcolor.backgroundColor,
         alignContent:"center",
         justifyContent:"center"
