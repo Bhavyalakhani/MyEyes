@@ -41,7 +41,7 @@ const stacknavigator = createStackNavigator({
   MoneyDetection:{
     screen:MoneyDetection,
     navigationOptions:{
-      title:"Expiry Date Recognition"
+      title:"Money Detection"
     }
   }
 })
