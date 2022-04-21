@@ -108,7 +108,7 @@ export default class DocReading extends React.Component {
             uri:response.assets[0].uri
         });
 
-        await fetch("http://192.168.0.124:5000/currencydetection",{
+        await fetch("http://192.168.43.74:5000/currencydetection",{
             method:"POST",
             headers:{
                 "Content-Type":"multipart/form-data"
